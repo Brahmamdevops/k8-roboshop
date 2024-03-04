@@ -11,6 +11,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: catalogue-deployment
+  namespace: roboshop
   labels:
     app: catalogue
     project: roboshop
@@ -32,9 +33,7 @@ spec:
       containers:
       - name: catalogue
         image: brahmamdevops/catalogue:v1
-        ports:
-        - containerPort: 8080
-          imagePullPolicy: Always
+        imagePullPolicy: Always
         envFrom:
         - configMapRef:
             name: catalogue-config
