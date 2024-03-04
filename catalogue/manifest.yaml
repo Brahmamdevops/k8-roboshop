@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalogue-config
+data:
+  mongo: "true"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue-deployment
+  labels:
+    app: catalogue
+    project: roboshop
+    tier: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalogue
+      project: roboshop
+      tier: app
+  template:
+    metadata:
+      labels:
+        app: catalogue
+        project: roboshop
+        tier: app
+    spec:
+      containers:
+      - name: catalogue
+        image: brahmamdevops/catalogue:v1
+        ports:
+        - containerPort: 8080
+          imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: catalogue-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogue-service
+spec:
+  selector:
+    app: catalogue
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
