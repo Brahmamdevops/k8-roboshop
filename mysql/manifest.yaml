@@ -28,20 +28,20 @@ metadata:
   labels: # these labels are deployment labels
     app: mysql
     project: roboshop
-    tier: app
+    tier: db
 spec:
   replicas: 1
   selector:
     matchLabels: # these labels are used to find the pods
       app: mysql
       project: roboshop
-      tier: app
+      tier: db
   template:
     metadata:
       labels: # these labels are pod labels
         app: mysql
         project: roboshop
-        tier: app
+        tier: db
     spec:
       containers:
       - name: mysql
@@ -63,7 +63,7 @@ spec:
   selector:
     app: mysql
     project: roboshop
-    tier: app
+    tier: db
   ports:
   - protocol: TCP
     port: 3306 #service-port
