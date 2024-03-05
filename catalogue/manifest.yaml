@@ -1,32 +1,30 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: catalogue-config
+  name: catalogue
   namespace: roboshop
 data:
   MONGO: "true"
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: catalogue-deployment
+  name: catalogue
   namespace: roboshop
-  labels:
+  labels: # these labels are deployment labels
     app: catalogue
     project: roboshop
     tier: app
 spec:
   replicas: 1
   selector:
-    matchLabels:
+    matchLabels: # these labels are used to find the pods
       app: catalogue
       project: roboshop
       tier: app
   template:
     metadata:
-      labels:
+      labels: # these labels are pod labels
         app: catalogue
         project: roboshop
         tier: app
@@ -37,19 +35,19 @@ spec:
         imagePullPolicy: Always
         envFrom:
         - configMapRef:
-            name: catalogue-config
-
+            name: catalogue
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: catalogue-service
+  name: catalogue
   namespace: roboshop
 spec:
   selector:
     app: catalogue
+    project: roboshop
+    tier: app
   ports:
   - protocol: TCP
-    port: 8080
-    targetPort: 8080
+    port: 8080 #service-port
+    targetPort: 8080 #container-port
